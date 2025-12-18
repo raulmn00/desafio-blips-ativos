@@ -77,7 +77,6 @@ docker-compose up --build
 3. A API estará disponível em:
    - API: http://localhost:8000
    - Documentação Swagger: http://localhost:8000/docs
-   - Documentação ReDoc: http://localhost:8000/redoc
 
 ### Executando Localmente (sem Docker)
 
