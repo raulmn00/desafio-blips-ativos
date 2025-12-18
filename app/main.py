@@ -79,5 +79,5 @@ async def health_check():
     """
     return {
         "status": "healthy",
-        "database": "connected" if lead_repository.database else "disconnected",
+        "database": "connected" if lead_repository.database is not None else "disconnected",
     }

@@ -5,7 +5,7 @@ services:
     image: mongo:7.0
     container_name: leads-mongodb
     ports:
-      - "27017:27017"
+      - "27018:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
@@ -21,7 +21,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      MONGODB_URL: mongodb://admin:admin123@mongodb:27017
+      MONGODB_URL: mongodb://admin:admin123@mongodb:27017/?authSource=admin
       MONGODB_DB_NAME: leads_db
       EXTERNAL_API_URL: https://dummyjson.com
     depends_on:

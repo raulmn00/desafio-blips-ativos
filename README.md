@@ -209,6 +209,78 @@ A configuração é gerenciada através de variáveis de ambiente:
 | `EXTERNAL_API_URL` | URL base da API externa | `https://dummyjson.com` |
 | `EXTERNAL_API_TIMEOUT` | Timeout de requisição da API (segundos) | `10` |
 
+## Acessando o Banco de Dados
+
+### Credenciais de Acesso
+
+| Campo | Valor |
+|-------|-------|
+| Host | `localhost` |
+| Porta | `27018` |
+| Usuário | `admin` |
+| Senha | `admin123` |
+| Auth Database | `admin` |
+| Database | `leads_db` |
+
+### Via Linha de Comando (mongosh)
+
+1. **Acesso interativo ao shell do MongoDB:**
+```bash
+docker exec -it leads-mongodb mongosh -u admin -p admin123 --authenticationDatabase admin
+```
+
+2. **Comandos úteis dentro do shell:**
+```javascript
+// Selecionar o banco de dados
+use leads_db
+
+// Listar todas as collections
+show collections
+
+// Ver todos os leads
+db.leads.find()
+
+// Ver leads formatados
+db.leads.find().pretty()
+
+// Contar total de leads
+db.leads.countDocuments()
+
+// Buscar lead por email
+db.leads.findOne({ email: "joao.silva@example.com" })
+```
+
+3. **Executar comandos diretamente (sem entrar no shell):**
+```bash
+# Listar bancos de dados
+docker exec leads-mongodb mongosh -u admin -p admin123 --authenticationDatabase admin --eval "show dbs"
+
+# Ver todos os leads
+docker exec leads-mongodb mongosh -u admin -p admin123 --authenticationDatabase admin leads_db --eval "db.leads.find()"
+
+# Contar leads
+docker exec leads-mongodb mongosh -u admin -p admin123 --authenticationDatabase admin leads_db --eval "db.leads.countDocuments()"
+```
+
+### Via MongoDB Compass (Interface Gráfica)
+
+1. **Baixe e instale o MongoDB Compass:**
+   - Download: https://www.mongodb.com/products/compass
+
+2. **Conecte usando a seguinte URI:**
+```
+mongodb://admin:admin123@localhost:27018/?authSource=admin
+```
+
+3. **Ou configure manualmente:**
+   - Clique em "New Connection"
+   - Em "URI", cole a string de conexão acima
+   - Clique em "Connect"
+
+4. **Navegue até o banco de dados:**
+   - Expanda `leads_db` na barra lateral
+   - Clique em `leads` para visualizar os documentos
+
 ## Arquitetura
 
 A aplicação segue uma arquitetura limpa com clara separação de responsabilidades:
