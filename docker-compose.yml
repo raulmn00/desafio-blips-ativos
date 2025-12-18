@@ -7,9 +7,9 @@ services:
     ports:
       - "27018:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin123
-      MONGO_INITDB_DATABASE: leads_db
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DB_NAME}
     volumes:
       - mongodb_data:/data/db
     networks:
@@ -21,9 +21,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      MONGODB_URL: mongodb://admin:admin123@mongodb:27017/?authSource=admin
-      MONGODB_DB_NAME: leads_db
-      EXTERNAL_API_URL: https://dummyjson.com
+      MONGODB_URL: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@mongodb:27017/?authSource=admin
+      MONGODB_DB_NAME: ${MONGODB_DB_NAME}
+      EXTERNAL_API_URL: ${EXTERNAL_API_URL}
     depends_on:
       - mongodb
     volumes:
