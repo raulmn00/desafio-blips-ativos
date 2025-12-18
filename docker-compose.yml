@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: leads-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: leads_db
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - leads-network
+
+  api:
+    build: .
+    container_name: leads-api
+    ports:
+      - "8000:8000"
+    environment:
+      MONGODB_URL: mongodb://admin:admin123@mongodb:27017
+      MONGODB_DB_NAME: leads_db
+      EXTERNAL_API_URL: https://dummyjson.com
+    depends_on:
+      - mongodb
+    volumes:
+      - ./app:/app/app
+    networks:
+      - leads-network
+
+volumes:
+  mongodb_data:
+
+networks:
+  leads-network:
+    driver: bridge
